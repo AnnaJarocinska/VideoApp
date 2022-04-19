@@ -2,15 +2,16 @@ import { useState } from "react";
 import moment from "moment";
 import VideoList from "./VideoList";
 import VideoInput from "./VideoInput";
+import { useLocalStorage } from "../utils/Hooks.js";
 
 const VideoApp = () => {
   const [inputValue, setInputValue] = useState("");
-  const [videoList, setVideoList] = useState([]);
+  const [videoList, setVideoList] = useLocalStorage('video-list', []);
   const [error, setError] = useState(null);
   const API_KEY_YT = process.env.REACT_APP_KEY_YT;
 
   const getVideo = () => {
-    const vimeoPattern = /[0-9]{8,}/g;
+    const vimeoPattern = /[0-9]{5,}/g;
     const ytPattern = /[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]/g;
 
     if (inputValue.match(ytPattern)) {
@@ -31,7 +32,7 @@ const VideoApp = () => {
               viewsNumber: item.statistics.viewCount,
               likesNumber: item.statistics.likeCount,
               thumbnail: item.snippet.thumbnails.default.url,
-              addingToAppDate: moment(),
+              addingToAppDate: moment().format("LLL"),
               favourite: false,
             },
           ]);
@@ -55,7 +56,7 @@ const VideoApp = () => {
               viewsNumber: item.stats_number_of_plays,
               likesNumber: item.stats_number_of_likes,
               thumbnail: item.thumbnail_small,
-              addingToAppDate: moment(),
+              addingToAppDate: moment().format('MMMM Do YYYY, h:mm:ss a').toString(),
               favourite: false,
             },
           ]);

@@ -22,8 +22,8 @@ const VideoList = ({ videoList, setVideoList }) => {
                 onClick={() => setWatch(video.videoId)}
               />
               <p>
-                Date added to the app:{" "}
-                {video.addingToAppDate?.format("LLLL").toString()}
+                Date added to the app:
+                {video.addingToAppDate}
               </p>
               <p>{video.favourite && "like"}</p>
               <button onClick={() => setWatch(video.videoId)}>watch</button>
@@ -80,7 +80,7 @@ const VideoList = ({ videoList, setVideoList }) => {
         onClick={() => {
           const sampleVideosListWithDate = sampleVideosList.map((v) => ({
             ...v,
-            addingToAppDate: moment(),
+            addingToAppDate: moment().format('MMMM Do YYYY, h:mm:ss a'),
           }));
           setVideoList([...videoList, ...sampleVideosListWithDate]);
         }}

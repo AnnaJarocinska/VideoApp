@@ -13,7 +13,7 @@ const VideoList = ({ videoList, setVideoList }) => {
         (video) => (
           <>
             <div>
-              <p>Number of views: {video.viewsNumber}</p>
+            {video.viewsNumber&& <p>Number of views: {video.viewsNumber}</p>}
               <p>Number of likes: {video.likesNumber}</p>
               <p>Title: {video.title}</p>
               <img
@@ -50,7 +50,7 @@ const VideoList = ({ videoList, setVideoList }) => {
               </button>
             </div>
             {watch === video.videoId && (
-              <VideoModal videoId={video.videoId} close={setWatch} />
+              <VideoModal src={video.src} close={setWatch} />
             )}
             {videoList.length > 0 && (
               <>

@@ -1,11 +1,10 @@
-const WatchVideoModal = ({ videoId, close }) => (
-  <>
+const WatchVideoModal = ({ src, close }) => ( <>
     <iframe
-      title={videoId}
+      title={src}
       type="text/html"
       width="640"
       height="360"
-      src={`http://www.youtube.com/embed/${videoId}?autoplay=1`}
+      src= {src}
     />
     <button onClick={() => close(null)}>x</button>
   </>

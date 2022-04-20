@@ -2,13 +2,20 @@ import { useState } from "react";
 import moment from "moment";
 import VideoList from "./VideoList";
 import VideoInput from "./VideoInput";
+import Error from "./Error";
 import { useLocalStorage } from "../utils/Hooks.js";
+import './VideoApp.css';
+import _ from 'lodash'
 
 const VideoApp = () => {
   const [inputValue, setInputValue] = useState("");
   const [videoList, setVideoList] = useLocalStorage('video-list', []);
   const [error, setError] = useState(null);
   const API_KEY_YT = process.env.REACT_APP_KEY_YT;
+
+const updateVideoList = (newVideoList) => {
+setVideoList(_.uniq(newVideoList))
+}
 
   const getVideo = () => {
     const vimeoPattern = /[0-9]{5,}/g;
@@ -48,7 +55,7 @@ const VideoApp = () => {
         })
         .then((data) => {
           const item = data[0];
-          setVideoList([
+          updateVideoList([
             ...videoList,
             {
               src: item.url,
@@ -66,15 +73,15 @@ const VideoApp = () => {
     }
   };
   return (
-    <div>
+    <>
       <VideoInput
         getVideo={getVideo}
         setVideoId={setInputValue}
         videoId={inputValue}
       />
-      {error}
-      <VideoList videoList={videoList} setVideoList={setVideoList} />
-    </div>
+      <Error message={error?.toString()}/>
+      <VideoList videoList={videoList} setVideoList={updateVideoList} />
+    </>
   );
 };
 

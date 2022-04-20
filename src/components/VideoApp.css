@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  font-family: "Open Sans", sans-serif;
+}
+p {
+  margin: 0;
+}
+
+.icon {
+  font-size: 18px;
+  color: rgb(136, 129, 129);
+}
+.icon.fa-heart.active,
+.icon.fa-heart:hover {
+  color: rgb(223, 8, 55);
+}
+.icon.fa-star.active,
+.icon.fa-star:hover {
+  color: yellow;
+}
+.icon.fa-database.active,
+.icon.fa-database:hover {
+  color: #2d8010;
+}
+.icon.fa-rotate-left.active,
+.icon.fa-rotate-left:hover {
+  color: rgb(26, 93, 238);
+}
+.icon:hover,
+span:hover {
+  color: yellowgreen;
+  transition: color 0.1s ease-in;
+}
+.icon.active {
+  color: yellowgreen;
+}
+.icon.rotate,
+.icon.fa-caret-up:hover {
+  transform: rotate(180deg);
+}
+.icon.sample {
+  margin-right: 0;
+}
+.icon.disabled,.icon.disabled:hover  {
+    color: rgb(136, 129, 129);
+  opacity: 0.3;
+}

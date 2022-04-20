@@ -1,0 +1,11 @@
+.video-modal{
+    position:absolute;
+    top: 20px;
+    right: 20px;
+    background-color: black;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid yellow;
+}

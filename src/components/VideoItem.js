@@ -1,14 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { faHeart, faPlay, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import VideoModal from "./VideoModal";
-import './VideoItem.css';
 import classNames from 'classnames';
+import VideoModal from "./VideoModal";
+import '../styles/VideoItem.css';
 
 const VideoItem = ({ video, videoList, setVideoList, display}) => {
   const [watch, setWatch] = useState(false);
-
   return (
     <>
       <div className={classNames("video-item", {"list": display === "list"}, {"cells": display=== "cells"})}>

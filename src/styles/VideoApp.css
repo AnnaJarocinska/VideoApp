@@ -5,6 +5,7 @@ body {
   font-size: 12px;
   font-family: "Open Sans", sans-serif;
 }
+
 p {
   margin: 0;
 }
@@ -13,38 +14,38 @@ p {
   font-size: 18px;
   color: rgb(136, 129, 129);
 }
-.icon.fa-heart.active,
-.icon.fa-heart:hover {
+
+.icon.fa-heart.active {
   color: rgb(223, 8, 55);
 }
-.icon.fa-star.active,
-.icon.fa-star:hover {
+
+.icon.fa-star.active {
   color: yellow;
 }
-.icon.fa-database.active,
+
 .icon.fa-database:hover {
   color: #2d8010;
 }
-.icon.fa-rotate-left.active,
+
 .icon.fa-rotate-left:hover {
   color: rgb(26, 93, 238);
 }
+
 .icon:hover,
 span:hover {
-  color: yellowgreen;
+  filter: brightness(150%);
   transition: color 0.1s ease-in;
+  cursor: pointer;
 }
+
 .icon.active {
   color: yellowgreen;
 }
-.icon.rotate,
-.icon.fa-caret-up:hover {
+
+.icon.rotate {
   transform: rotate(180deg);
 }
+
 .icon.sample {
   margin-right: 0;
-}
-.icon.disabled,.icon.disabled:hover  {
-    color: rgb(136, 129, 129);
-  opacity: 0.3;
 }

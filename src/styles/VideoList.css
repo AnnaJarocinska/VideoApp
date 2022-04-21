@@ -4,7 +4,9 @@
   justify-content: center;
   align-items: center;
 }
-
+div.video-item.list .list-icons {
+  flex-direction: column;
+}
 .list-icons .icon {
   font-size: 22px;
   margin: 0 15px;
@@ -25,6 +27,13 @@
   justify-content: space-evenly;
   align-items: center;
 }
+
+@media (orientation: landscape) and (max-width: 900px) {
+  .pagination {
+    margin: 7% auto;
+  }
+}
+
 .video-list .active {
   color: yellowgreen;
 }

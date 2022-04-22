@@ -3,12 +3,11 @@ import { faHeart, faPlay, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from 'classnames';
 import VideoModal from "./VideoModal";
-import '../styles/VideoItem.css';
+import '../../styles/VideoItem.css';
 
 const VideoItem = ({ video, videoList, setVideoList, display}) => {
   const [watch, setWatch] = useState(false);
-  return (
-    <>
+  return <>
       <div className={classNames("video-item", {"list": display === "list"}, {"cells": display=== "cells"})}>
       <img
           src={video.thumbnail}
@@ -57,7 +56,6 @@ const VideoItem = ({ video, videoList, setVideoList, display}) => {
         />
       )}
     </>
-  );
 };
 
 export default VideoItem;

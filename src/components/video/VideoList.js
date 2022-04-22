@@ -8,14 +8,14 @@ import {
   faRotateLeft,
   faStar,
   faCaretUp,
-  faDatabase,
-  faAngleLeft,
-  faAngleRight,
+  faDatabase
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { sampleVideosList } from "../utils/SampleVideosList";
+import { sampleVideosList } from "../../utils/SampleVideosList";
 import VideoItem from "./VideoItem";
-import "../styles/VideoList.css";
+import PageNumbers from "../pagination/PageNumbers";
+import "../../styles/VideoList.css";
+
 
 const VideoList = ({ videoList, setVideoList, setError }) => {
   const [onlyFavourites, setOnlyFavourites] = useState(false);
@@ -28,7 +28,7 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
   });
 
   useEffect(() => {
-    setFavouritesVideoList(videoList.filter((v) => v.favourite));
+    setFavouritesVideoList(videoList.filter(v => v?.favourite));
     const currentPageAvailable =
       pagination.currentPage <
       favouritesVideoList.length / pagination.videosPerPage;
@@ -41,26 +41,10 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
   }, [onlyFavourites, videoList, favouritesVideoList, pagination]);
 
   const pageNumbers = [];
-  const numberOfPages = Math.ceil(
-    (onlyFavourites ? favouritesVideoList : videoList).length /
-      pagination.videosPerPage
-  );
+  const numberOfPages = Math.ceil((onlyFavourites ? favouritesVideoList : videoList).length / pagination.videosPerPage);
   for (let i = 1; i <= numberOfPages; i++) {
     pageNumbers.push(i);
   }
-  const renderPageNumbers = pageNumbers.map(n => (
-    <span
-      key={n}
-      className={classNames({ active: n === pagination.currentPage })}
-      id={n}
-      onClick={(e) =>
-        setPagination({
-          ...pagination,
-          currentPage: Number(e.target.id),
-        })
-      }
-    >{n} </span>));
-
   const indexOfLastVideo = pagination.currentPage * pagination.videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - pagination.videosPerPage;
   const renderVideoList = (onlyFavourites ? favouritesVideoList : videoList)
@@ -71,7 +55,7 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
       ...v,
       addingToAppDate: moment().format("LLL"),
     }));
-    const isNewVidioOnTheList = [...videoList].filter(v =>sampleVideosList.map((s) => s.src === v.src));
+    const isNewVidioOnTheList = [...videoList].find(v =>sampleVideosList.map(s => s.src === v.src));
     if (isNewVidioOnTheList && videoList.length !== 0) {
       setError( "The videos from the sample list are already in your movies list");
     }
@@ -118,8 +102,9 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
   const listIcons = (
     <div className="list-icons">
       {videoList.length !== 0 &&
-        icons.map((i) => (
+        icons.map((i, j) => (
           <FontAwesomeIcon
+          key={i.icon + j}
             onClick={i.onClick}
             icon={i.icon}
             className={i.className}
@@ -132,32 +117,7 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
       />
     </div>
   );
-
-  const paginationView = (
-    <div className="pagination">
-      <FontAwesomeIcon
-        icon={faAngleLeft}
-        onClick={() =>
-          setPagination({
-            ...pagination,
-            currentPage:
-              pagination.currentPage === 1 ? 1 : pagination.currentPage - 1,
-          })
-        }
-      />
-      {renderPageNumbers}
-      <FontAwesomeIcon
-        icon={faAngleRight}
-        onClick={() =>
-          setPagination({
-            ...pagination,
-            currentPage: pagination.currentPage === pageNumbers.length ? pageNumbers.length : pagination.currentPage + 1,
-          })
-        }
-      />
-    </div>
-  );
-
+  
   return (
     <div className="video-list">
       {listIcons}
@@ -172,7 +132,7 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
           />
         ))}
       </div>
-      {videoList.length !== 0 && paginationView}
+      {videoList.length !== 0 && <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>}
     </div>
   );
 };

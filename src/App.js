@@ -1,4 +1,4 @@
-import VideoApp from './components/VideoApp';
+import VideoApp from './components/video/VideoApp';
 
 function App() {
   return (

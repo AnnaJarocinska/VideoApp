@@ -11,13 +11,15 @@ import {
   faDatabase
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { sampleVideosList } from "../../utils/SampleVideosList";
-import VideoItem from "./VideoItem";
+import 'react-toastify/dist/ReactToastify.css';
+import {toast} from 'react-toastify';
+import { sampleVideosList } from "../utils/SampleVideosList";
+import VideoItem from "../videoItem/VideoItem";
 import PageNumbers from "../pagination/PageNumbers";
-import "../../styles/VideoList.css";
+import "./VideoList.css";
 
 
-const VideoList = ({ videoList, setVideoList, setError }) => {
+const VideoList = ({ videoList, setVideoList}) => {
   const [onlyFavourites, setOnlyFavourites] = useState(false);
   const [favouritesVideoList, setFavouritesVideoList] = useState([]);
   const [display, setDisplay] = useState("cells");
@@ -57,7 +59,7 @@ const VideoList = ({ videoList, setVideoList, setError }) => {
     }));
     const isNewVidioOnTheList = [...videoList].find(v =>sampleVideosList.map(s => s.src === v.src));
     if (isNewVidioOnTheList && videoList.length !== 0) {
-      setError( "The videos from the sample list are already in your movies list");
+      toast.error("The videos from the sample list are already in your movies list", { theme: "dark" });
     }
     setVideoList(_.uniqBy([...videoList, ...sampleVideosListWithDate], "src"));
   };

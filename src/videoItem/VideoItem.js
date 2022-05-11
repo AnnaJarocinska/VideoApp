@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { faHeart, faPlay, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from 'classnames';
-import VideoModal from "./VideoModal";
-import '../../styles/VideoItem.css';
+import VideoModal from "../videoModal/VideoModal";
+import './VideoItem.css';
 
 const VideoItem = ({ video, videoList, setVideoList, display}) => {
   const [watch, setWatch] = useState(false);

@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    background-color: #324851;
+    color: white;
+    font-size: 12px;
+    font-family: "Open Sans", sans-serif;
+}
+
+p {
+    margin: 0;
+}
+
+.video-app {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.icon {
+    font-size: 18px;
+    color: #7da3a1;
+}
+
+.icon:hover, span:hover, .icon.active:hover {
+    color: #34675c;
+    transition: color 0.1s ease-in;
+    cursor: pointer;
+}
+
+.icon.active {
+    color: #86ac41
+}
+
+.icon.rotate {
+    transform: rotate(180deg);
+}
+
+.icon.sample {
+    margin-right: 0;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import '../../styles/VideoInput.css';
+import './VideoInput.css';
 
 const VideoInput = ({ getVideo, setVideoId, videoId }) => (
   <div className="video-input">

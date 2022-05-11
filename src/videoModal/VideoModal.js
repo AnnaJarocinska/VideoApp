@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "../../styles/VideoModal.css";
+import "./VideoModal.css";
 
 const VideoModal = ({ src, title, close }) => {
   const width = window.innerWidth < 640 ? window.innerWidth - 80 : 640

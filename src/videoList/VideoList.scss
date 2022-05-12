@@ -1,0 +1,40 @@
+@use '../utils/variables.scss';
+
+.list-icons {
+  height: 50px;
+  @include variables.flex-center();
+
+  & .icon {
+    font-size: 22px;
+    margin: 0 15px;
+  }
+}
+
+.cells {
+  @include variables.flex-center();
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.pagination {
+  width: 200px;
+  margin: 15% auto;
+  @include variables.flex-center();
+  justify-content: space-evenly;
+}
+
+.video-list .active {
+  color: variables.$active-color;
+}
+
+div.video-item.list .list-icons {
+  flex-direction: column;
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+  .pagination {
+    margin: 7% auto;
+  }
+}
+
+

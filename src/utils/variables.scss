@@ -1,0 +1,18 @@
+$background-color: #324851;
+$font-color: #fff;
+$element-color: #7da3a1;
+$hover-color: #34675c;
+$active-color: #86ac41;
+$background-color-transparent: rgba(255, 255, 255, 0.2);
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin hover {
+  color: $hover-color;
+  transition: color 0.1s ease-in;
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@ import VideoApp from './videoApp/VideoApp';
 
 function App() {
     return (
-        <div className="App">
+        <div className='App'>
             <VideoApp/>
         </div>
     );

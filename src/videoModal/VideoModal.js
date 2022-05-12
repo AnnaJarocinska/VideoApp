@@ -1,44 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./VideoModal.css";
+import React from 'react';
+import {useMediaQuery} from 'react-responsive';
+import {faX} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import './VideoModal.scss';
 
-const VideoModal = ({ src, title, close }) => {
-  const width = window.innerWidth < 640 ? window.innerWidth - 80 : 640
-  const [screenSize, getScreenSize] = useState({
-    width: width,
-    height: width < 640? "auto" : 360,
-  });
-  const setScreenSize = () => {
-    const width = window.innerWidth < 640 ? window.innerWidth - 80 : 640
-    getScreenSize({
-      width: width,
-      height: width < 640 ? "auto" : 360,
-    });
-  };
+const VideoModal = ({src, title, close}) => {
+    const mobilePortrait = useMediaQuery({maxWidth: 500} && {orientation: 'portrait'});
+    const frameWidth = mobilePortrait ? window.innerWidth - 80 : 640;
+    const frameHeight = mobilePortrait ? "auto" : 360;
 
-  useEffect(() => {
-    window.addEventListener("resize", setScreenSize);
-    return () => window.removeEventListener("resize", setScreenSize);
-  }, [screenSize]);
-
-  return (
-    <div className="video-modal-container">
-      <iframe
-        className="video-modal"
-        title={title}
-        width={screenSize.width}
-        height={screenSize.height}
-        type="text/html"
-        src={src}
-      />
-      <FontAwesomeIcon
-        icon={faX}
-        className="video-modal-btn"
-        onClick={() => close(null)}
-      />
-    </div>
-  );
+    return (
+        <div className='video-modal-container'>
+            <div className='video-modal'>
+                <iframe
+                    title={title}
+                    width={frameWidth}
+                    height={frameHeight}
+                    type='text/html'
+                    src={src}
+                />
+                <FontAwesomeIcon
+                    icon={faX}
+                    className='video-modal-button'
+                    onClick={() => close(null)}
+                />
+            </div>
+        </div>
+    );
 };
 
 export default VideoModal;

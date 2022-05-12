@@ -1,13 +1,16 @@
 # Video App
 
 ## General info
-This app stores a user generated list of favorite videos
-## Technologies
-* React 18.0.0\
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-        
+This app stores a user generated list of favorite videos
+
+## Technologies
+
+* React 18.0.0\
+  This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## Setup
+
 * Clone project from github
 
 ```
@@ -26,6 +29,7 @@ git clone https://github.com/AnnaJarocinska/VideoApp.git
 ```
  `npm start`
 ```
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 

@@ -11,30 +11,30 @@ body {
     margin: 0;
   }
 }
-  .video-app {
-    max-width: 1200px;
-    margin: 0 auto;
 
+.video-app {
+  max-width: 1200px;
+  margin: 0 auto;
 
-    .icon {
-      font-size: 18px;
-      color: variables.$element-color;
+  .icon {
+    font-size: 18px;
+    color: variables.$element-color;
 
-      &.active {
-        color: variables.$active-color;
-      }
-
-      &.rotate {
-        transform: rotate(180deg);
-      }
-
-      &.sample {
-        margin-right: 0;
-      }
+    &.active {
+      color: variables.$active-color;
     }
 
-    .icon:hover, span:hover, .icon.active:hover {
-      @include variables.hover();
+    &.rotate {
+      transform: rotate(180deg);
+    }
+
+    &.sample {
+      margin-right: 0;
     }
   }
+
+  .icon:hover, span:hover, .icon.active:hover {
+    @include variables.hover();
+  }
+}
 

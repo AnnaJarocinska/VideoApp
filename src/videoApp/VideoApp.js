@@ -17,6 +17,7 @@ const VideoApp = () => {
     const updateVideoList = (newVideoList) => setVideoList(newVideoList);
 
     const checkRepetitionsAndAdd = (title, newVideo) => {
+
         const isNewVideoOnTheList = [...videoList].find((v) => v.title === title);
 
         if (isNewVideoOnTheList) {
@@ -33,107 +34,73 @@ const VideoApp = () => {
         const vimeoPattern = /\d{5,}/g;
         const ytPattern = /[\dA-Za-z_-]{10}[048AEIMQUYcgkosw]/g;
 
-        // const videoSources = [{
-        //     name: 'vimeo',
-        //     pattern: /\d{5,}/g,
-        //     videoId: inputValue.match(/\d{5,}/g),
-        //     url: `http://vimeo.com/api/v2/video/${this.videoId}.json`,
-        //     item: `data[0]`,
-        //     newVideo: {
-        //         videoId: inputValue.match(/\d{5,}/g),,
-        //         src: `http://player.vimeo.com/video/${this.videoId}`,
-        //         title: this.item.title,
-        //         viewsNumber: this.item.stats_number_of_plays,
-        //         likesNumber: this.item.stats_number_of_likes,
-        //         thumbnail: this.item.thumbnail_small,
-        //         addingToAppDate: moment().format('LLL'),
-        //         favourite: false
-        //     }
-        // },
-        //     {
-        //         name: 'yt',
-        //         pattern: /[\dA-Za-z_-]{10}[048AEIMQUYcgkosw]/g,
-        //         videoId: inputValue.match(/[\dA-Za-z_-]{10}[048AEIMQUYcgkosw]/g),
-        //         url: `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${this.videoId}&key=${API_KEY_YT}`,
-        //         item: `data.items[0]`,
-        //         newVideo: {
-        //             videoId: this.videoId,
-        //             src: `http://www.youtube.com/embed/${this.item.id}`,
-        //             title: this.item.snippet.title,
-        //             viewsNumber: this.item.statistics.viewCount,
-        //             likesNumber: this.item.statistics.likeCount,
-        //             thumbnail: this.item.snippet.thumbnails.default.url,
-        //             addingToAppDate: moment().format('LLL'),
-        //             favourite: false
-        //         }
-        //     },
-        // ]
-        //
-        // videoSources.forEach(vs => {
-        //     if (vs.videoId) {
-        //         fetch(vs.url)
-        //             .then(result => {
-        //                 return result.json();
-        //             })
-        //             .then(data => {
-        //                 checkRepetitionsAndAdd(data.item.snippet.title, vs.newVideo);
-        //             })
-        //             .catch(error => {
-        //                 toast.error('Error occured. Try again', {theme: 'dark'});
-        //             })
-        //     }
-        // })
+        const videoSources = [{
+            name: 'vimeo',
+            pattern: /\d{5,}/g,
+            get videoId() {
+                return inputValue.match(this.pattern)
+            },
+            get url() {
+                return `http://vimeo.com/api/v2/video/${this.videoId}.json`
+            }
+        },
+            {
+                name: 'yt',
+                pattern: /[\dA-Za-z_-]{10}[048AEIMQUYcgkosw]/g,
+                get videoId() {
+                    return inputValue.match(this.pattern)
+                },
+                get url() {
+                    return `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${this.videoId}&key=${API_KEY_YT}`
+                },
+            }
+        ]
 
-        if (inputValue.match(ytPattern)) {
-            const videoId = inputValue.match(ytPattern);
-            fetch(
-                `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY_YT}`
-            )
-                .then(result => {
-                    return result.json();
-                })
-                .then(data => {
-                    const item = data.items[0];
+        videoSources.forEach(vs => {
 
-                    checkRepetitionsAndAdd(item.snippet.title, {
-                        videoId: videoId,
-                        src: `http://www.youtube.com/embed/${item.id}`,
-                        title: item.snippet.title,
-                        viewsNumber: item.statistics.viewCount,
-                        likesNumber: item.statistics.likeCount,
-                        thumbnail: item.snippet.thumbnails.default.url,
-                        addingToAppDate: moment().format('LLL'),
-                        favourite: false
-                    });
-                })
-                .catch(error => {
-                    toast.error('Error occured. Try again', {theme: 'dark'});
-                })
-        }
+            if (vs.videoId) {
+                fetch(vs.url)
+                    .then(result => {
+                        return result.json();
+                    })
+                    .then(data => {
 
-        if (inputValue.match(vimeoPattern)) {
-            const videoId = inputValue.match(vimeoPattern);
-            fetch(`http://vimeo.com/api/v2/video/${videoId}.json`)
-                .then(result => {
-                    return result.json();
-                })
-                .then(data => {
-                    const item = data[0];
-                    checkRepetitionsAndAdd(item.title, {
-                        videoId: videoId,
-                        src: `http://player.vimeo.com/video/${videoId}`,
-                        title: item.title,
-                        viewsNumber: item.stats_number_of_plays,
-                        likesNumber: item.stats_number_of_likes,
-                        thumbnail: item.thumbnail_small,
-                        addingToAppDate: moment().format('LLL'),
-                        favourite: false
-                    });
-                })
-                .catch(error => {
-                    return toast.error('Error occured. Try again', {theme: 'dark'});
-                });
-        }
+                        if (vs.name === "yt") {
+
+                            const item = data.items[0];
+
+                            checkRepetitionsAndAdd(item.snippet.title, {
+                                videoId: vs.videoId,
+                                src: `http://www.youtube.com/embed/${item.id}`,
+                                title: item.snippet.title,
+                                viewsNumber: item.statistics.viewCount,
+                                likesNumber: item.statistics.likeCount,
+                                thumbnail: item.snippet.thumbnails.default.url,
+                                addingToAppDate: moment().format('LLL'),
+                                favourite: false
+                            });
+                        }
+                        if (vs.name === "vimeo") {
+
+                            const item = data[0];
+
+                            checkRepetitionsAndAdd(item.title, {
+                                videoId: vs.videoId,
+                                src: `http://player.vimeo.com/video/${vs.videoId}`,
+                                title: item.title,
+                                viewsNumber: item.stats_number_of_plays,
+                                likesNumber: item.stats_number_of_likes,
+                                thumbnail: item.thumbnail_small,
+                                addingToAppDate: moment().format('LLL'),
+                                favourite: false
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        toast.error('Error occured. Try again', {theme: 'dark'});
+                    })
+            }
+        })
 
         if (!inputValue.match(vimeoPattern) && !inputValue.match(ytPattern)) {
             toast.error('No such video was found', {theme: 'dark'})

@@ -103,22 +103,22 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
     const listIcons = (
         <div className='list-icons'>
             {videoList.length !== 0 && icons.map((i, j) => (
-                    <FontAwesomeIcon
-                        key={i.icon + j}
-                        onClick={i.onClick}
-                        icon={i.icon}
-                        className={i.className}
-                        data-tip={i.name}
-                    />
-                ))}
+                <FontAwesomeIcon
+                    key={i.icon + j}
+                    onClick={i.onClick}
+                    icon={i.icon}
+                    className={i.className}
+                    data-tip={i.name}
+                />
+            ))}
             <FontAwesomeIcon
                 onClick={loadSampleVideoList}
                 icon={faDatabase}
-                className= 'icon'
+                className='icon'
                 data-tip='Load sample video list'
             />
             <ThemeToggle
-                darkMode = {darkMode}
+                darkMode={darkMode}
                 setDarkMode={setDarkMode}/>
         </div>
     );
@@ -137,7 +137,8 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
                     />
                 ))}
             </div>
-            {videoList.length !== 0 && <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>}
+            {videoList.length !== 0 &&
+                <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>}
         </div>
     );
 };

@@ -10,8 +10,9 @@ import VideoItem from '../videoItem/VideoItem';
 import PageNumbers from '../pagination/PageNumbers';
 import {sampleVideosList} from '../utils/SampleVideosList';
 import './VideoList.scss';
+import ThemeToggle from "../themeToggle/ThemeToggle";
 
-const VideoList = ({videoList, setVideoList}) => {
+const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
     const [onlyFavourites, setOnlyFavourites] = useState(false);
     const [favouritesVideoList, setFavouritesVideoList] = useState([]);
     const [display, setDisplay] = useState('cells');
@@ -113,9 +114,12 @@ const VideoList = ({videoList, setVideoList}) => {
             <FontAwesomeIcon
                 onClick={loadSampleVideoList}
                 icon={faDatabase}
-                className='icon sample'
+                className= 'icon'
                 data-tip='Load sample video list'
             />
+            <ThemeToggle
+                darkMode = {darkMode}
+                setDarkMode={setDarkMode}/>
         </div>
     );
 

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import moment from 'moment';
-import _ from 'lodash';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VideoList from '../videoList/VideoList';
@@ -8,100 +7,102 @@ import VideoInput from '../videoInput/VideoInput';
 import {useLocalStorage} from '../utils/Hooks.js';
 import './VideoApp.scss';
 
-const VideoApp = () => {
+const VIMEO = "vimeo";
+const YT = "yt";
+
+const VideoApp = ({darkMode, setDarkMode}) => {
     const [inputValue, setInputValue] = useState('');
     const [videoList, setVideoList] = useLocalStorage('video-list', []);
     const API_KEY_YT = process.env.REACT_APP_KEY_YT;
 
-    const updateVideoList = (newVideoList) => setVideoList(newVideoList);
-
-    const checkRepetitionsAndAdd = (title, newVideo) => {
-
-        const isNewVideoOnTheList = [...videoList].find((v) => v.title === title);
-
-        if (isNewVideoOnTheList) {
+    const checkIsSearchedVideoAlreadyOnTheList = (id) => {
+        if ([...videoList].find((v) => JSON.stringify(v.videoId) === JSON.stringify(id))) {
             toast.error('The video is already in your movies list', {theme: 'dark'});
-            return
+            return true;
         }
-
-        updateVideoList(_.uniqBy([...videoList, newVideo], 'src'));
-        setInputValue('');
-        toast.success('Video has been added to the list', {theme: 'dark'});
+        return false;
     };
 
-    const getVideo = () => {
+    const updateVideoList = (newVideoList) => {
+        setVideoList(newVideoList);
+        toast.success('New item has been added to the list', {theme: 'dark'});
+    };
 
-        const videoSources = [{
-            name: 'vimeo',
-            pattern: /\d{5,}/g,
+    const videoSource = [{
+        name: 'vimeo',
+        pattern: /\d{5,}/g,
+        get videoId() {
+            return inputValue.match(this.pattern);
+        },
+        get url() {
+            return `http://vimeo.com/api/v2/video/${this.videoId}.json`;
+        }
+    },
+        {
+            name: 'yt',
+            pattern: /[-_0-9A-Za-z]{11}/g,
             get videoId() {
-                return inputValue.match(this.pattern)
+                return inputValue.match(this.pattern);
             },
             get url() {
-                return `http://vimeo.com/api/v2/video/${this.videoId}.json`
+                return `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${this.videoId}&key=${API_KEY_YT}`;
             }
-        },
-            {
-                name: 'yt',
-                pattern: /[\dA-Za-z_-]{10}[048AEIMQUYcgkosw]/g,
-                get videoId() {
-                    return inputValue.match(this.pattern)
-                },
-                get url() {
-                    return `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${this.videoId}&key=${API_KEY_YT}`
+        }
+    ].filter(s => s.videoId)?.[0];
+
+    const addNewVideoToTheList = (source, data) => {
+
+        const newVideo = () => {
+
+            if (source === YT) {
+                return {
+                    videoId: videoSource.videoId,
+                    src: `http://www.youtube.com/embed/${data.items[0].id}`,
+                    title: data.items[0].snippet.title,
+                    viewsNumber: data.items[0].statistics.viewCount,
+                    likesNumber: data.items[0].statistics.likeCount,
+                    thumbnail: data.items[0].snippet.thumbnails.default.url,
+                    addingToAppDate: moment().format('LLL'),
+                    favourite: false
                 }
             }
-        ].filter(s => s.videoId)?.[0];
 
-        if (!videoSources) {
+            if (source === VIMEO) {
+                return {
+                    videoId: videoSource.videoId,
+                    src: `http://player.vimeo.com/video/${videoSource.videoId}`,
+                    title: data[0].title,
+                    viewsNumber: data[0].stats_number_of_plays,
+                    likesNumber: data[0].stats_number_of_likes,
+                    thumbnail: data[0].thumbnail_small,
+                    addingToAppDate: moment().format('LLL'),
+                    favourite: false
+                }
+            }
+        }
+
+        updateVideoList([...videoList, newVideo()]);
+    }
+
+    const getVideo = () => {
+        setInputValue("")
+
+        if (!videoSource) {
             toast.error('No such video was found', {theme: 'dark'})
             return;
         }
 
-        fetch(videoSources.url)
+        !checkIsSearchedVideoAlreadyOnTheList(videoSource.videoId) &&
+        fetch(videoSource.url)
             .then(result => {
                 return result.json();
             })
             .then(data => {
-
-                if (videoSources.name === "yt") {
-
-                    const item = data.items[0];
-
-                    checkRepetitionsAndAdd(item.snippet.title, {
-                        videoId: videoSources.videoId,
-                        src: `http://www.youtube.com/embed/${item.id}`,
-                        title: item.snippet.title,
-                        viewsNumber: item.statistics.viewCount,
-                        likesNumber: item.statistics.likeCount,
-                        thumbnail: item.snippet.thumbnails.default.url,
-                        addingToAppDate: moment().format('LLL'),
-                        favourite: false
-                    });
-                }
-
-
-                if (videoSources.name === "vimeo") {
-
-                    const item = data[0];
-
-                    checkRepetitionsAndAdd(item.title, {
-                        videoId: videoSources.videoId,
-                        src: `http://player.vimeo.com/video/${videoSources.videoId}`,
-                        title: item.title,
-                        viewsNumber: item.stats_number_of_plays,
-                        likesNumber: item.stats_number_of_likes,
-                        thumbnail: item.thumbnail_small,
-                        addingToAppDate: moment().format('LLL'),
-                        favourite: false
-                    })
-                }
-                setInputValue("")
+                addNewVideoToTheList(videoSource.name, data)
             })
             .catch(error => {
                 toast.error('Error occured. Try again', {theme: 'dark'});
             })
-
     };
 
     return (
@@ -125,6 +126,8 @@ const VideoApp = () => {
                 <VideoList
                     videoList={videoList}
                     setVideoList={updateVideoList}
+                    darkMode ={darkMode}
+                    setDarkMode={setDarkMode}
                 />
             </div>
         </>

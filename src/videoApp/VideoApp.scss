@@ -27,10 +27,6 @@ body {
     &.rotate {
       transform: rotate(180deg);
     }
-
-    &.sample {
-      margin-right: 0;
-    }
   }
 
   .icon:hover, span:hover, .icon.active:hover {

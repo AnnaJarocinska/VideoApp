@@ -1,36 +1,32 @@
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import allActions from "../actions";
-import './ThemeToggle.scss';
+import {faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import {useLocalStorage} from "../utils/Hooks";
 
 const ThemeToggle = () => {
-    const dispatch = useDispatch();
+    const [darkMode, setDarkMode] = useLocalStorage('dark-mode', false);
 
     return (
-        <label className="toggle-container"
-               data-tip={"Dark mode"}>
-            <input type="checkbox" onChange={() => dispatch(allActions.themeActions.toggleDarkMode())}/>
-            <span className="toggle"/>
-        </label>
+        <>
+            {!darkMode
+                ?
+                <FontAwesomeIcon
+                    icon={faSun}
+                    className={classNames('icon', {active: !darkMode})}
+                    onClick={() => setDarkMode(true)}
+                    data-tip='Light mode'
+                />
+                :
+                <FontAwesomeIcon
+                    icon={faMoon}
+                    className={classNames('icon', {active: darkMode})}
+                    onClick={() => setDarkMode(false)}
+                    data-tip='Dark mode'
+                />}
+        </>
     )
 };
 
 export default ThemeToggle;
-
-
-// export default (Component) => ()=> {
-//
-//     const themeToggle = useSelector(state => state.themeToggle)
-//     const dispatch = useDispatch();
-//
-//     return (props) => (
-//         <div style= {{color: themeToggle.darkMode ? 'violet' : 'pink'}}>
-//             <button onClick = {()=> {
-//                 dispatch(allActions.themeActions.toggleDarkMode())
-//                 console.log(themeToggle.darkMode, 'themeToggle')
-//             }}>themeToggle</button>
-//             <Component {...props} />
-//         </div>
-//     );
-// };
 

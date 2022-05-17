@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
-import _ from 'lodash';
+import {uniqBy} from 'lodash-es';
 import 'react-toastify/dist/ReactToastify.css';
 import {toast} from 'react-toastify';
 import {faList, faTableCells, faRotateLeft, faStar, faCaretUp, faDatabase} from '@fortawesome/free-solid-svg-icons';
@@ -11,8 +11,9 @@ import PageNumbers from '../pagination/PageNumbers';
 import {sampleVideosList} from '../utils/SampleVideosList';
 import './VideoList.scss';
 import ThemeToggle from "../themeToggle/ThemeToggle";
+import ListMessage from "../listMessage/listMessage";
 
-const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
+const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [onlyFavourites, setOnlyFavourites] = useState(false);
     const [favouritesVideoList, setFavouritesVideoList] = useState([]);
     const [display, setDisplay] = useState('cells');
@@ -52,21 +53,30 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
 
         const isNewVideoOnTheList = [...videoList].find(v => sampleVideosList.map(s => s.src === v.src));
 
-        if (isNewVideoOnTheList && videoList.length !== 0) {
+        if (isNewVideoOnTheList && videoList.length >= sampleVideosList.length) {
             toast.error('The videos from the sample list are already in your movies list', {theme: 'dark'});
         }
-        setVideoList(_.uniqBy([...videoList, ...sampleVideosListWithDate], 'src'));
+        if (isNewVideoOnTheList && videoList.length < sampleVideosList.length) {
+            toast.info('Some videos on the sample list are already on your list, so only the rest has been added', {theme: 'dark'});
+        }
+        setVideoList(uniqBy([...videoList, ...sampleVideosListWithDate], 'src'));
     };
 
     const icons = [
         {
-            onClick: () => setDisplay('list'),
+            onClick: () => {
+                setDisplay('list');
+                hideTooltip();
+            },
             icon: faList,
             className: classNames('icon', {active: display === 'list'}),
             name: 'List'
         },
         {
-            onClick: () => setDisplay('cells'),
+            onClick: () => {
+                setDisplay('cells');
+                hideTooltip();
+            },
             icon: faTableCells,
             className: classNames('icon', {active: display === 'cells'}),
             name: 'Cells'
@@ -81,22 +91,29 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
                     })
                 );
                 setSort(!sort);
+                hideTooltip();
             },
             icon: faCaretUp,
             className: classNames('icon', {rotate: sort}),
             name: 'Sort by date added'
         },
         {
-            onClick: () => setVideoList([]),
+            onClick: () => {
+                setVideoList([]);
+                hideTooltip();
+            },
             icon: faRotateLeft,
             className: 'icon',
             name: 'Reset list'
         },
         {
-            onClick: () => setOnlyFavourites(!onlyFavourites),
+            onClick: () => {
+                setOnlyFavourites(!onlyFavourites);
+                hideTooltip();
+            },
             icon: faStar,
             className: classNames('icon', {active: onlyFavourites}),
-            name: 'Show only favourites'
+            name: 'Show only favourites',
         },
     ];
 
@@ -109,6 +126,8 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
                     icon={i.icon}
                     className={i.className}
                     data-tip={i.name}
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />
             ))}
             <FontAwesomeIcon
@@ -116,29 +135,40 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode}) => {
                 icon={faDatabase}
                 className='icon'
                 data-tip='Load sample video list'
+                onMouseEnter={setShowTooltip(true)}
+                onMouseLeave={hideTooltip}
             />
             <ThemeToggle
                 darkMode={darkMode}
-                setDarkMode={setDarkMode}/>
+                setDarkMode={setDarkMode}
+                setShowTooltip={setShowTooltip}
+                hideTooltip={hideTooltip}/>
         </div>
     );
 
     return (
         <div className='video-list'>
             {listIcons}
-            <div className={classNames({list: display === 'list'}, {cells: display === 'cells'})}>
-                {renderVideoList?.map((video, index) => (
-                    <VideoItem
-                        key={video.title + index}
-                        video={video}
-                        videoList={videoList}
-                        setVideoList={setVideoList}
-                        display={display}
-                    />
-                ))}
-            </div>
-            {videoList.length !== 0 &&
-                <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>}
+            {renderVideoList.length > 0 ?
+                <>
+                    <div className={classNames({list: display === 'list'}, {cells: display === 'cells'})}>
+                        {renderVideoList?.map((video, index) => (
+                            <VideoItem
+                                key={video.title + index}
+                                video={video}
+                                videoList={videoList}
+                                setVideoList={setVideoList}
+                                display={display}
+                                setShowTooltip={setShowTooltip}
+                                hideTooltip={hideTooltip}
+                            />
+                        ))}
+                    </div>
+
+                    <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>
+                </> :
+                <ListMessage> You don't have any favourite video on your list </ListMessage>
+            }
         </div>
     );
 };

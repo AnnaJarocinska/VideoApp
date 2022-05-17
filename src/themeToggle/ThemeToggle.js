@@ -3,7 +3,7 @@ import {faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 
-const ThemeToggle = ({darkMode, setDarkMode}) => {
+const ThemeToggle = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
 
     return (
         <>
@@ -12,15 +12,25 @@ const ThemeToggle = ({darkMode, setDarkMode}) => {
                 <FontAwesomeIcon
                     icon={faSun}
                     className={classNames('icon', {active: !darkMode})}
-                    onClick={() => setDarkMode(true)}
+                    onClick={() => {
+                        setDarkMode(true);
+                        hideTooltip();
+                    }}
                     data-tip='Light mode'
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />
                 :
                 <FontAwesomeIcon
                     icon={faMoon}
                     className={classNames('icon', {active: darkMode})}
-                    onClick={() => setDarkMode(false)}
+                    onClick={() => {
+                        setDarkMode(false);
+                        hideTooltip();
+                    }}
                     data-tip='Dark mode'
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />}
         </>
     )

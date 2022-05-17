@@ -19,6 +19,7 @@ body {
   .icon {
     font-size: 18px;
     color: variables.$element-color;
+    outline: none;
 
     &.active {
       color: variables.$active-color;

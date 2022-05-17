@@ -10,7 +10,7 @@ import './VideoApp.scss';
 const VIMEO = "vimeo";
 const YT = "yt";
 
-const VideoApp = ({darkMode, setDarkMode}) => {
+const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [inputValue, setInputValue] = useState('');
     const [videoList, setVideoList] = useLocalStorage('video-list', []);
     const API_KEY_YT = process.env.REACT_APP_KEY_YT;
@@ -23,10 +23,7 @@ const VideoApp = ({darkMode, setDarkMode}) => {
         return false;
     };
 
-    const updateVideoList = (newVideoList) => {
-        setVideoList(newVideoList);
-        toast.success('New item has been added to the list', {theme: 'dark'});
-    };
+    const updateVideoList = (newVideoList) => setVideoList(newVideoList);
 
     const videoSource = [{
         name: 'vimeo',
@@ -82,6 +79,7 @@ const VideoApp = ({darkMode, setDarkMode}) => {
         }
 
         updateVideoList([...videoList, newVideo()]);
+        toast.success('New item has been added to the list', {theme: 'dark'});
     }
 
     const getVideo = () => {
@@ -126,8 +124,10 @@ const VideoApp = ({darkMode, setDarkMode}) => {
                 <VideoList
                     videoList={videoList}
                     setVideoList={updateVideoList}
-                    darkMode ={darkMode}
+                    darkMode={darkMode}
                     setDarkMode={setDarkMode}
+                    setShowTooltip={setShowTooltip}
+                    hideTooltip={hideTooltip}
                 />
             </div>
         </>

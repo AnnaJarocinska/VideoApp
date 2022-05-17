@@ -4,8 +4,9 @@ import {faHeart, faPlay, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import VideoModal from '../videoModal/VideoModal';
 import './VideoItem.scss';
+import {toast} from "react-toastify";
 
-const VideoItem = ({video, videoList, setVideoList, display}) => {
+const VideoItem = ({video, videoList, setVideoList, display, setShowTooltip, hideTooltip}) => {
     const [watch, setWatch] = useState(false);
     return <>
         <div className={classNames('video-item', {'list': display === 'list'}, {'cells': display === 'cells'})}>
@@ -24,18 +25,25 @@ const VideoItem = ({video, videoList, setVideoList, display}) => {
                 <FontAwesomeIcon
                     icon={faPlay}
                     className='icon'
-                    onClick={() => setWatch(video.videoId)}
+                    onClick={() => {
+                        setWatch(video.videoId);
+                        hideTooltip();
+                    }}
                     data-tip='Watch'
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />
                 <FontAwesomeIcon
                     icon={faTrash}
                     className='icon'
-                    onClick={() =>
-                        setVideoList(
-                            [...videoList].filter((v) => v.videoId !== video.videoId)
-                        )
-                    }
+                    onClick={() => {
+                        setVideoList([...videoList].filter((v) => v.videoId !== video.videoId));
+                        hideTooltip();
+                        toast.warning('Video has been removed', {theme: 'dark'});
+                    }}
                     data-tip='Delete'
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />
                 <FontAwesomeIcon
                     icon={faHeart}
@@ -45,8 +53,11 @@ const VideoItem = ({video, videoList, setVideoList, display}) => {
                         let index = [...videoList].findIndex(v => v.videoId === video.videoId);
                         list[index].favourite = !list[index].favourite;
                         setVideoList(list);
+                        hideTooltip();
                     }}
                     data-tip='Like'
+                    onMouseEnter={setShowTooltip(true)}
+                    onMouseLeave={hideTooltip}
                 />
             </div>
         </div>

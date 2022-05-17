@@ -146,10 +146,12 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
         </div>
     );
 
+    const message = `You don't have any ${onlyFavourites && videoList.length !== 0 ? 'favourite' : ''} video on your list`;
+
     return (
         <div className='video-list'>
             {listIcons}
-            {renderVideoList.length > 0 ?
+            {renderVideoList.length !== 0 ?
                 <>
                     <div className={classNames({list: display === 'list'}, {cells: display === 'cells'})}>
                         {renderVideoList?.map((video, index) => (
@@ -167,7 +169,7 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
 
                     <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>
                 </> :
-                <ListMessage> You don't have any favourite video on your list </ListMessage>
+                <ListMessage> {message} </ListMessage>
             }
         </div>
     );

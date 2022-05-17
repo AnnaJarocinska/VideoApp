@@ -4,6 +4,10 @@ import VideoApp from './videoApp/VideoApp';
 import Theme from './theme/Theme';
 import {useLocalStorage} from "./utils/Hooks";
 
+import Button from '@mui/material/Button';
+import DatePicker from '../src/datePicker/DatePicker';
+
+
 function App() {
     const [darkMode, setDarkMode] = useLocalStorage('dark-mode', false);
     const [showTooltip, setShowTooltip] = useState(true);
@@ -15,7 +19,10 @@ function App() {
 
     return (
         <Theme darkMode={darkMode}>
+            <Button>mui</Button>
+       <DatePicker/>
             <div className='App'>
+
                 <VideoApp darkMode={darkMode} setDarkMode={setDarkMode} setShowTooltip={setShowTooltip}
                           hideTooltip={hideTooltip}/>
                 {showTooltip && <ReactTooltip/>}

@@ -10,8 +10,9 @@ import VideoItem from '../videoItem/VideoItem';
 import PageNumbers from '../pagination/PageNumbers';
 import {sampleVideosList} from '../utils/SampleVideosList';
 import './VideoList.scss';
-import ThemeToggle from "../themeToggle/ThemeToggle";
-import ListMessage from "../listMessage/listMessage";
+import ThemeToggle from '../themeToggle/ThemeToggle';
+import ListMessage from '../listMessage/listMessage';
+import TodayIcon from '@mui/icons-material/Today';
 
 const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [onlyFavourites, setOnlyFavourites] = useState(false);
@@ -22,6 +23,7 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
         currentPage: 1,
         videosPerPage: 2,
     });
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
         setFavouritesVideoList(videoList.filter(v => v?.favourite));
@@ -142,7 +144,18 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
                 darkMode={darkMode}
                 setDarkMode={setDarkMode}
                 setShowTooltip={setShowTooltip}
-                hideTooltip={hideTooltip}/>
+                hideTooltip={hideTooltip}
+            />
+            <TodayIcon
+                className='icon'
+                onClick={() => {
+                    setShowDatePicker(!showDatePicker);
+                    hideTooltip();
+                }}
+                data-tip='Show only videos from date range'
+                setShowTooltip={setShowTooltip}
+                hideTooltip={hideTooltip}
+            />
         </div>
     );
 
@@ -151,6 +164,7 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
     return (
         <div className='video-list'>
             {listIcons}
+
             {renderVideoList.length !== 0 ?
                 <>
                     <div className={classNames({list: display === 'list'}, {cells: display === 'cells'})}>

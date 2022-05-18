@@ -2,17 +2,25 @@ import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
 import {uniqBy} from 'lodash-es';
-import 'react-toastify/dist/ReactToastify.css';
 import {toast} from 'react-toastify';
-import {faList, faTableCells, faRotateLeft, faStar, faCaretUp, faDatabase} from '@fortawesome/free-solid-svg-icons';
+import 'react-toastify/dist/ReactToastify.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import VideoItem from '../videoItem/VideoItem';
-import PageNumbers from '../pagination/PageNumbers';
+import {
+    faList,
+    faTableCells,
+    faRotateLeft,
+    faStar,
+    faCaretUp,
+    faDatabase,
+    faCalendar
+} from '@fortawesome/free-solid-svg-icons';
 import {sampleVideosList} from '../utils/SampleVideosList';
-import './VideoList.scss';
-import ThemeToggle from '../themeToggle/ThemeToggle';
 import ListMessage from '../listMessage/listMessage';
-import TodayIcon from '@mui/icons-material/Today';
+import VideoItem from '../videoItem/VideoItem';
+import DatePicker from '../datePicker/DatePicker';
+import ThemeToggle from '../themeToggle/ThemeToggle';
+import PageNumbers from '../pagination/PageNumbers';
+import './VideoList.scss';
 
 const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [onlyFavourites, setOnlyFavourites] = useState(false);
@@ -24,6 +32,12 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
         videosPerPage: 2,
     });
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [dateRange, setDateRange] = useState({
+        dateFrom: '2000-01-01',
+        dateTo: moment().format('YYYY-MM-DD')
+    });
+    const [renderVideoList, setRenderVideoList] = useState([]);
+    const [searchVideosFromDateRange, setSearchVideosFromDateRange] = useState(false)
 
     useEffect(() => {
         setFavouritesVideoList(videoList.filter(v => v?.favourite));
@@ -35,22 +49,29 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
                 currentPage: 1,
             });
         }
-    }, [onlyFavourites, videoList, favouritesVideoList, pagination]);
+        const indexOfLastVideo = pagination.currentPage * pagination.videosPerPage;
+        const indexOfFirstVideo = indexOfLastVideo - pagination.videosPerPage;
+        setRenderVideoList((onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo));
+        searchVideosFromDateRange
+            ?
+            setRenderVideoList((onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo).filter(v => moment(v.addingToAppDate).isSameOrAfter(dateRange.dateFrom, 'day')))
+            :
+            setRenderVideoList((onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo))
+
+
+    }, [onlyFavourites, videoList, favouritesVideoList, pagination, searchVideosFromDateRange]);
 
     const pageNumbers = [];
     const numberOfPages = Math.ceil((onlyFavourites ? favouritesVideoList : videoList).length / pagination.videosPerPage);
     for (let i = 1; i <= numberOfPages; i++) {
         pageNumbers.push(i);
     }
-    const indexOfLastVideo = pagination.currentPage * pagination.videosPerPage;
-    const indexOfFirstVideo = indexOfLastVideo - pagination.videosPerPage;
-    const renderVideoList = (onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo);
 
     const loadSampleVideoList = () => {
 
         const sampleVideosListWithDate = sampleVideosList.map(v => ({
             ...v,
-            addingToAppDate: moment().format('LLL'),
+            addingToAppDate: moment().format('YYYY-MM-DD'),
         }));
 
         const isNewVideoOnTheList = [...videoList].find(v => sampleVideosList.map(s => s.src === v.src));
@@ -58,6 +79,7 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
         if (isNewVideoOnTheList && videoList.length >= sampleVideosList.length) {
             toast.error('The videos from the sample list are already in your movies list', {theme: 'dark'});
         }
+
         if (isNewVideoOnTheList && videoList.length < sampleVideosList.length) {
             toast.info('Some videos on the sample list are already on your list, so only the rest has been added', {theme: 'dark'});
         }
@@ -117,6 +139,15 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
             className: classNames('icon', {active: onlyFavourites}),
             name: 'Show only favourites',
         },
+        {
+            onClick: () => {
+                setShowDatePicker(!showDatePicker);
+                hideTooltip();
+            },
+            icon: faCalendar,
+            className: classNames('icon', {active: searchVideosFromDateRange}),
+            name: 'Show only videos from date range',
+        },
     ];
 
     const listIcons = (
@@ -146,25 +177,24 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
                 setShowTooltip={setShowTooltip}
                 hideTooltip={hideTooltip}
             />
-            <TodayIcon
-                className='icon'
-                onClick={() => {
-                    setShowDatePicker(!showDatePicker);
-                    hideTooltip();
-                }}
-                data-tip='Show only videos from date range'
-                setShowTooltip={setShowTooltip}
-                hideTooltip={hideTooltip}
-            />
         </div>
     );
 
-    const message = `You don't have any ${onlyFavourites && videoList.length !== 0 ? 'favourite' : ''} video on your list`;
+    const listMessage = `You don't have any ${onlyFavourites && videoList.length !== 0 ? 'favourite' : ''} video on your list`;
 
     return (
         <div className='video-list'>
             {listIcons}
-
+            <DatePicker
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                open={showDatePicker}
+                handleClose={() => setShowDatePicker(false)}
+                setSearchVideosFromDateRange={setSearchVideosFromDateRange}
+                setRenderVideoList={setRenderVideoList}
+                renderVideoList={renderVideoList}
+                searchVideosFromDateRange={searchVideosFromDateRange}
+            />
             {renderVideoList.length !== 0 ?
                 <>
                     <div className={classNames({list: display === 'list'}, {cells: display === 'cells'})}>
@@ -180,10 +210,9 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
                             />
                         ))}
                     </div>
-
                     <PageNumbers pageNumbers={pageNumbers} pagination={pagination} setPagination={setPagination}/>
                 </> :
-                <ListMessage> {message} </ListMessage>
+                <ListMessage> {listMessage} </ListMessage>
             }
         </div>
     );

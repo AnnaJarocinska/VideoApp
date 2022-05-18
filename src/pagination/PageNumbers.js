@@ -1,6 +1,6 @@
-import React from "react";
-import classNames from "classnames";
-import Pagination from "./Pagination";
+import React from 'react';
+import classNames from 'classnames';
+import Pagination from './Pagination';
 
 const PageNumbers = ({pageNumbers, pagination, setPagination}) =>
     pageNumbers.map(n => <span

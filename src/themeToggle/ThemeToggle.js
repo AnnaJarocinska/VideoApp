@@ -1,10 +1,9 @@
 import React from 'react';
-import {faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
+import classNames from 'classnames';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
 
 const ThemeToggle = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
-
     return (
         <>
             {!darkMode

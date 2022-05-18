@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import moment from 'moment';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useLocalStorage} from '../utils/Hooks.js';
 import VideoList from '../videoList/VideoList';
 import VideoInput from '../videoInput/VideoInput';
-import {useLocalStorage} from '../utils/Hooks.js';
 import './VideoApp.scss';
 
-const VIMEO = "vimeo";
-const YT = "yt";
+const VIMEO = 'vimeo';
+const YT = 'yt';
 
 const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [inputValue, setInputValue] = useState('');
@@ -59,7 +59,7 @@ const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
                     viewsNumber: data.items[0].statistics.viewCount,
                     likesNumber: data.items[0].statistics.likeCount,
                     thumbnail: data.items[0].snippet.thumbnails.default.url,
-                    addingToAppDate: moment().format('LLL'),
+                    addingToAppDate: moment().format('YYYY-MM-DD'),
                     favourite: false
                 }
             }
@@ -72,7 +72,7 @@ const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
                     viewsNumber: data[0].stats_number_of_plays,
                     likesNumber: data[0].stats_number_of_likes,
                     thumbnail: data[0].thumbnail_small,
-                    addingToAppDate: moment().format('LLL'),
+                    addingToAppDate: moment().format('YYYY-MM-DD'),
                     favourite: false
                 }
             }
@@ -83,7 +83,7 @@ const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     }
 
     const getVideo = () => {
-        setInputValue("")
+        setInputValue('')
 
         if (!videoSource) {
             toast.error('No such video was found', {theme: 'dark'})

@@ -1,9 +1,9 @@
 import React from 'react';
-import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons';
 
 const Pagination = (Component) => (props) => (
-    <div className="pagination">
+    <div className='pagination'>
         <FontAwesomeIcon
             icon={faAngleLeft}
             onClick={() => props.setPagination({

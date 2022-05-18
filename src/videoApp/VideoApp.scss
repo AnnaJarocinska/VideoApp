@@ -3,7 +3,7 @@
 body {
   margin: 0;
   background-color: variables.$background-color;
-  color: variables.$font-color;
+
   font-size: 12px;
   font-family: "Open Sans", sans-serif;
 
@@ -15,6 +15,7 @@ body {
 .video-app {
   max-width: 1200px;
   margin: 0 auto;
+  color: variables.$font-color;
 
   .icon {
     font-size: 18px;

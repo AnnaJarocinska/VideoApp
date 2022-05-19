@@ -1,7 +1,7 @@
 {
   "name": "video-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://annajarocinska.github.io/VideoApp/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -38,7 +38,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d react-scripts build"
+    "deploy": "gh-pages-clean gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

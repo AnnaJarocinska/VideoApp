@@ -1,7 +1,7 @@
 {
   "name": "video-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://annajarocinska.github.io/VideoApp/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -19,7 +19,6 @@
     "babel-plugin-macros": "^3.1.0",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.1",
-    "gh-pages": "^4.0.0",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.3",
     "react": "^18.1.0",
@@ -38,7 +37,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d react-scripts build"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -57,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }

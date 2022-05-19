@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/AnnaJarocinska/VideoApp/static/css/main.5d59f1a3.css",
+    "main.js": "/AnnaJarocinska/VideoApp/static/js/main.e3445528.js",
+    "static/js/787.898e1469.chunk.js": "/AnnaJarocinska/VideoApp/static/js/787.898e1469.chunk.js",
+    "index.html": "/AnnaJarocinska/VideoApp/index.html",
+    "main.5d59f1a3.css.map": "/AnnaJarocinska/VideoApp/static/css/main.5d59f1a3.css.map",
+    "main.e3445528.js.map": "/AnnaJarocinska/VideoApp/static/js/main.e3445528.js.map",
+    "787.898e1469.chunk.js.map": "/AnnaJarocinska/VideoApp/static/js/787.898e1469.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5d59f1a3.css",
+    "static/js/main.e3445528.js"
+  ]
+}

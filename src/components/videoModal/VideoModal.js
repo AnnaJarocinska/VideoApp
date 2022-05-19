@@ -2,6 +2,7 @@ import React from 'react';
 import {useMediaQuery} from 'react-responsive';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faX} from '@fortawesome/free-solid-svg-icons';
+
 import './VideoModal.scss';
 
 const VideoModal = ({src, title, close}) => {

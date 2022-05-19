@@ -14,7 +14,8 @@ import {
     faDatabase,
     faCalendar
 } from '@fortawesome/free-solid-svg-icons';
-import {sampleVideosList} from '../utils/SampleVideosList';
+
+import {sampleVideosList} from '../../utils/SampleVideosList';
 import ListMessage from '../listMessage/listMessage';
 import VideoItem from '../videoItem/VideoItem';
 import DatePicker from '../datePicker/DatePicker';
@@ -51,7 +52,9 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
         }
         const indexOfLastVideo = pagination.currentPage * pagination.videosPerPage;
         const indexOfFirstVideo = indexOfLastVideo - pagination.videosPerPage;
+
         setRenderVideoList((onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo));
+
         searchVideosFromDateRange
             ?
             setRenderVideoList((onlyFavourites ? favouritesVideoList : videoList).slice(indexOfFirstVideo, indexOfLastVideo).filter(v => moment(v.addingToAppDate).isSameOrAfter(dateRange.dateFrom, 'day')))
@@ -193,7 +196,6 @@ const VideoList = ({videoList, setVideoList, darkMode, setDarkMode, setShowToolt
                 setSearchVideosFromDateRange={setSearchVideosFromDateRange}
                 setRenderVideoList={setRenderVideoList}
                 renderVideoList={renderVideoList}
-                searchVideosFromDateRange={searchVideosFromDateRange}
             />
             {renderVideoList.length !== 0 ?
                 <>

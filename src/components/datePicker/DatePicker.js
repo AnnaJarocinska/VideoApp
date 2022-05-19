@@ -1,13 +1,12 @@
 import React from 'react';
-import {Box, Checkbox, FormControlLabel, FormGroup, Modal, TextField} from '@mui/material';
+import {Box, Button, FormGroup, Modal, TextField} from '@mui/material';
 
 const DatePicker = ({
                         dateRange,
                         setDateRange,
                         open,
                         handleClose,
-                        setSearchVideosFromDateRange,
-                        searchVideosFromDateRange,
+                        setSearchVideosFromDateRange
                     }) => {
 
     const boxStyle = {
@@ -30,7 +29,28 @@ const DatePicker = ({
     };
 
     const itemStyle = {
-        marginTop: '8px'
+        mt: '8px'
+    };
+
+    const filterButtonStyle = {
+        backgroundColor: '#86ac41',
+        width: '48%',
+        marginTop: '8px',
+        mr: '2%',
+        '&:hover': {
+            backgroundColor: '#86ac41',
+            boxShadow: 'inset 0 0 0.5em white'
+        }
+    };
+
+    const cancelButtonStyle = {
+        backgroundColor: '#34675c',
+        width: '50%',
+        marginTop: '8px',
+        '&:hover': {
+            backgroundColor: '#34675c',
+            boxShadow: 'inset 0 0 0.5em white'
+        }
     };
 
     return (
@@ -67,17 +87,26 @@ const DatePicker = ({
                             }}
                         />
                     </FormGroup>
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox
-                            onChange={() => {
-                                setSearchVideosFromDateRange(!searchVideosFromDateRange);
-                                handleClose();
-                            }}
-                            checked={searchVideosFromDateRange}
-                            {...!searchVideosFromDateRange ? 'enable filtering' : 'disable filtering'}
-                        />}
-                                          label={'filter'}/>
-                    </FormGroup>
+                    <Button
+                        sx={filterButtonStyle}
+                        onClick={() => {
+                            setSearchVideosFromDateRange(true);
+                            handleClose()
+                        }}
+                        color='info'
+                        variant='contained'>
+                        Filter</Button>
+                    <Button
+                        sx={cancelButtonStyle}
+                        onClick={() => {
+                            setSearchVideosFromDateRange(false);
+                            handleClose();
+                        }}
+                        color='error'
+                        variant='contained'
+                    >
+                        Cancel
+                    </Button>
                 </form>
             </Box>
         </Modal>

@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import {toast} from 'react-toastify';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHeart, faPlay, faTrash} from '@fortawesome/free-solid-svg-icons';
+
 import VideoModal from '../videoModal/VideoModal';
 import './VideoItem.scss';
 
 const VideoItem = ({video, videoList, setVideoList, display, setShowTooltip, hideTooltip}) => {
-
     const [watch, setWatch] = useState(false);
 
     return (

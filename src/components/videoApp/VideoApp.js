@@ -2,13 +2,12 @@ import React, {useState} from 'react';
 import moment from 'moment';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useLocalStorage} from '../utils/Hooks.js';
+
+import {useLocalStorage} from '../../hooks/useLocalStorage/useLocalSrotage.js';
+import {VIMEO, YT} from "../../globalConfigs/videoSourcesConfig";
 import VideoList from '../videoList/VideoList';
 import VideoInput from '../videoInput/VideoInput';
 import './VideoApp.scss';
-
-const VIMEO = 'vimeo';
-const YT = 'yt';
 
 const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const [inputValue, setInputValue] = useState('');
@@ -16,10 +15,13 @@ const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
     const API_KEY_YT = process.env.REACT_APP_KEY_YT;
 
     const checkIsSearchedVideoAlreadyOnTheList = (id) => {
-        if ([...videoList].find((v) => JSON.stringify(v.videoId) === JSON.stringify(id))) {
-            toast.error('The video is already in your movies list', {theme: 'dark'});
+        const isAlready = [...videoList].find((v) => JSON.stringify(v.videoId) === JSON.stringify(id))
+
+        if (isAlready) {
+            toast.error('This video is already in your movies list', {theme: 'dark'});
             return true;
         }
+
         return false;
     };
 
@@ -90,17 +92,16 @@ const VideoApp = ({darkMode, setDarkMode, setShowTooltip, hideTooltip}) => {
             return;
         }
 
-        !checkIsSearchedVideoAlreadyOnTheList(videoSource.videoId) &&
+        const searchedVideoIsAlreadyOnTheList = checkIsSearchedVideoAlreadyOnTheList(videoSource.videoId);
+
+        if (searchedVideoIsAlreadyOnTheList) {
+            return false;
+        }
+
         fetch(videoSource.url)
-            .then(result => {
-                return result.json();
-            })
-            .then(data => {
-                addNewVideoToTheList(videoSource.name, data)
-            })
-            .catch(error => {
-                toast.error('Error occured. Try again', {theme: 'dark'});
-            })
+            .then(result => result.json())
+            .then(data => addNewVideoToTheList(videoSource.name, data))
+            .catch(error => toast.error('Error occured. Try again', {theme: 'dark'}))
     };
 
     return (

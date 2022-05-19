@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import ReactTooltip from 'react-tooltip';
-import {useLocalStorage} from './utils/Hooks';
-import VideoApp from './videoApp/VideoApp';
-import Theme from './theme/Theme';
+
+import {useLocalStorage} from './hooks/useLocalStorage/useLocalSrotage';
+import VideoApp from './components/videoApp/VideoApp';
+import Theme from './components/theme/Theme';
 
 function App() {
     const [darkMode, setDarkMode] = useLocalStorage('dark-mode', false);
